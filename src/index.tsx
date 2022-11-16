@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import Recovery from './pages/Recovery';
 import Reset from './pages/Reset';
 import Profile from './components/Profile';
+import { StyledEngineProvider } from '@mui/material/styles';
 import './index.css';
 
 export const ROUTER_PATH = {
@@ -62,9 +63,11 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <StyledEngineProvider injectFirst>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </StyledEngineProvider>
   </React.StrictMode>
 );
 
