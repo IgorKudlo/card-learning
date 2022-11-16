@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios, { AxiosError } from 'axios';
 
 import { ILoginParams, ILoginResponse } from '../../../api/types';
 import { authAPI } from '../../../api/cards-api';
 import { RootState } from '../../../app/store';
-import {redirect} from 'react-router-dom';
+import { errorHandler } from '../../../utils/errorHandler';
 
 export interface AuthState {
   user: ILoginResponse | null,
@@ -25,15 +24,7 @@ export const login = createAsyncThunk(
       const response = await authAPI.login(data);
       return response.data;
     } catch (error) {
-      const err = error as Error | AxiosError<{ error: string }>
-      if (axios.isAxiosError(err)) {
-        const errorText = err.response?.data ? err.response.data.error : err.message;
-        alert(errorText)
-        //dispatch(setAppErrorAC(errorText))
-      } else {
-        alert(err.message)
-        //dispatch(setAppErrorAC(`Native error ${err.message}`))
-      }
+      errorHandler(error);
     }
   }
 );
@@ -45,15 +36,7 @@ export const logout = createAsyncThunk(
       const response = await authAPI.logout();
       return response.data;
     } catch (error) {
-      const err = error as Error | AxiosError<{ error: string }>
-      if (axios.isAxiosError(err)) {
-        const errorText = err.response?.data ? err.response.data.error : err.message;
-        alert(errorText)
-        //dispatch(setAppErrorAC(errorText))
-      } else {
-        alert(err.message)
-        //dispatch(setAppErrorAC(`Native error ${err.message}`))
-      }
+      errorHandler(error);
     }
   }
 );
