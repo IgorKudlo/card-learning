@@ -11,7 +11,7 @@ const Recovery = () => {
         <button type="submit">Send Instructions</button>
       </form>
       <p>Did you remember your password?</p>
-      <Link to="/">Try logging in</Link>
+      <Link to="/login">Try logging in</Link>
     </div>
   );
 };
