@@ -9,13 +9,13 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { useAppSelector } from '../../app/hooks';
-import { user } from '../../features/auth/Login/authSlice';
+import { userSelector } from '../../features/auth/Login/authSlice';
 import ProfileMenu from './Menu';
 import s from './styles.module.css';
 
 
 const Header = () => {
-  const userInfo = useAppSelector(user);
+  const user = useAppSelector(userSelector);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,12 +32,12 @@ const Header = () => {
         <Toolbar disableGutters>
           <span className={s.logo}>Learning Cards</span>
           <Box sx={{ ml: 'auto' }}>
-            {userInfo
+            {user
               ? (<>
-                <Link to="/profile" className={s.userName}>{userInfo?.name}</Link>
+                <Link to="/profile" className={s.userName}>{user?.name}</Link>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={userInfo?.name} src={userInfo?.avatar} />
+                    <Avatar alt={user?.name} src={user?.avatar} />
                   </IconButton>
                 </Tooltip>
                 <ProfileMenu anchorElUser={anchorElUser} closeHandler={handleCloseUserMenu} />

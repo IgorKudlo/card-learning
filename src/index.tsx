@@ -62,13 +62,13 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
+  /*<React.StrictMode>*/
     <StyledEngineProvider injectFirst>
       <Provider store={store}>
         <RouterProvider router={router} />
       </Provider>
     </StyledEngineProvider>
-  </React.StrictMode>
+  /*</React.StrictMode>*/
 );
 
 // If you want to start measuring performance in your app, pass a function

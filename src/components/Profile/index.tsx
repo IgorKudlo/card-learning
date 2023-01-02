@@ -6,13 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { logout } from '../../features/auth/Login/authSlice';
+import { isLoggedInSelector, logout, userSelector   } from '../../features/auth/Login/authSlice';
 import Card from '../Card';
 import s from './styles.module.css';
 
 const Profile = () => {
-  const user = useAppSelector(state => state.auth.user);
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
+  const user = useAppSelector(userSelector);
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

@@ -1,8 +1,23 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import Container from '@mui/material/Container';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { login } from './authSlice';
+import { isLoggedInSelector, loadingSelector, login } from './authSlice';
+import Card from '../../../components/Card';
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormHelperText,
+  Input,
+  InputAdornment,
+  InputLabel,
+  TextField
+} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 type InputsLogin = {
   email: string,
@@ -11,13 +26,29 @@ type InputsLogin = {
 };
 
 const Login = () => {
+  // 1qazxcvBG
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const appStatus = useAppSelector(state => state.auth.status);
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn);
+  const appStatus = useAppSelector(loadingSelector);
+  const isLoggedIn = useAppSelector(isLoggedInSelector);
   const { register, handleSubmit, formState: { errors } } = useForm<InputsLogin>();
   const onSubmit: SubmitHandler<InputsLogin> = (data) => {
     dispatch(login(data));
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [password, setPassword] = React.useState('');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -27,33 +58,61 @@ const Login = () => {
   }, [navigate, isLoggedIn]);
 
   return (
-    <div>
-      <h1>Sign in</h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={appStatus === 'loading' ? "statusLoading" : undefined}
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          {...register("email", { required: true })}
-        /><br />
-        {errors.email?.type === 'required' && <p role="alert">Email is required</p>}
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password", { required: true })}
-        /><br />
-        {errors.password?.type === 'required' && <p role="alert">Password is required</p>}
-        <label>
-          <input type="checkbox" {...register("rememberMe")} /> Remember me
-        </label><br />
-        <Link to="/recovery">Forgot Password?</Link><br />
-        <button type="submit">Sign In</button>
-      </form>
-      <p>Already have an account?</p>
-      <Link to="/register">Sign Up</Link>
-    </div>
+    <Container maxWidth="xl">
+      <Card title={"Sign in"}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={appStatus === 'loading' ? "statusLoading" : undefined}
+        >
+          <TextField
+            {...register("email", { required: true })}
+            type="email"
+            label="Email"
+            error={!!errors.email}
+            helperText={errors.email?.type === 'required' && "Email is required"}
+            variant="standard"
+            fullWidth
+            margin="dense"
+          />
+
+          <FormControl variant="standard" fullWidth margin="dense">
+            <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+            <Input
+              {...register("password", { required: true })}
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={handleChange}
+              error={!!errors.email}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            {errors.password?.type === 'required' && <FormHelperText>Password is required</FormHelperText>}
+          </FormControl>
+
+          <FormGroup sx={{mt: 1}}>
+            <FormControlLabel
+              {...register("rememberMe")}
+              control={<Checkbox size="small" />}
+              label="Remember me"
+            />
+          </FormGroup>
+
+          <Link to="/recovery">Forgot Password?</Link><br />
+          <button type="submit">Sign In</button>
+        </form>
+        <p>Already have an account?</p>
+        <Link to="/register">Sign Up</Link>
+      </Card>
+    </Container>
   );
 };
 

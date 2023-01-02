@@ -28,13 +28,17 @@ export interface IRegisterResponse {
   error?: string,
 }
 
-export interface IMeParams {
-  name: string,
-  avatar: string,
-}
-
 export interface IMeResponse {
-  updatedUser: {},
+  _id: string,
+  email: string,
+  name: string,
+  avatar?: string,
+  publicCardPacksCount: number,
+  created: Date,
+  updated: Date,
+  isAdmin: boolean,
+  verified: boolean,
+  rememberMe: boolean,
   error?: string,
 }
 

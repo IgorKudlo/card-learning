@@ -4,7 +4,6 @@ import {
   ILoginParams,
   ILoginResponse,
   ILogoutResponse,
-  IMeParams,
   IMeResponse,
   IRecoveryParams,
   IRecoveryResponse,
@@ -36,8 +35,8 @@ export const authAPI = {
   register(data: IRegisterParams) {
     return instance.post<IRegisterResponse>('auth/register', data);
   },
-  me(data: IMeParams) {
-    return instance.put<IMeResponse>('auth/me', data);
+  me() {
+    return instance.post<IMeResponse>('auth/me', {});
   },
   logout() {
     return instance.delete<ILogoutResponse>('auth/me', {});
